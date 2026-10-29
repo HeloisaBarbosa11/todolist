@@ -1,6 +1,6 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
-import 'dotenv/config';
+import './env.js';
 import tasksRoutes from './routes/tasks.js';
 
 const app = Fastify({ logger: true });
@@ -22,4 +22,3 @@ try {
   app.log.error(err);
   process.exit(1);
 }
-

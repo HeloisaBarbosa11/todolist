@@ -1,59 +1,63 @@
-# Todolist — React + Fastify + MySQL
+# Lista de tarefas
 
-Sistema de lista de tarefas com a interface das imagens de referência (tema escuro, logo "to*do.*", busca, contadores e modal de criação).
+Projeto escolar de lista de tarefas. O frontend usa React e Vite; o backend já existente usa Fastify e MySQL.
 
-## Estrutura
+## Requisitos
 
+- Node.js e npm
+- MySQL em execução
+
+## Banco de dados
+
+Inicie o serviço MySQL instalado no computador (o nome do serviço varia conforme a instalação). Configure o arquivo `backend/.env` com os dados do seu MySQL. Os nomes esperados são:
+
+```text
+DB_HOST=127.0.0.1
+DB_PORT=3307
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=todolist
 ```
-todolist/
-├── backend/     # API em Fastify + MySQL
-└── frontend/    # Interface em React (Vite + Tailwind)
+
+Abra `backend/.env` em um editor de texto e coloque a senha que você configurou para o usuário `root` do seu MySQL depois de `DB_PASSWORD=`. Não use uma senha de exemplo nem compartilhe esse arquivo. O projeto não define uma senha no código.
+
+Para criar o banco e a tabela, abra o PowerShell na pasta do projeto e execute:
+
+```powershell
+Get-Content .\backend\schema.sql | mysql --host=127.0.0.1 --port=3307 --user=root --password
 ```
 
-## 1. Banco de dados (MySQL)
+O MySQL pedirá a senha do usuário `root`.
 
-Crie o banco e a tabela executando o script:
+## Iniciar o backend
 
-```bash
-mysql -u root -p < backend/schema.sql
-```
+Em um terminal, na pasta do projeto:
 
-(O backend também cria a tabela automaticamente ao iniciar, caso ainda não exista.)
-
-## 2. Backend (Fastify)
-
-```bash
-cd backend
-cp .env.example .env
-# edite o .env com usuário/senha do seu MySQL
+```powershell
+Set-Location .\backend
 npm install
 npm run dev
 ```
 
-A API sobe em `http://localhost:3333`.
+A API fica em `http://localhost:3333`. O backend carrega as configurações de `backend/.env` mesmo quando iniciado a partir de outra pasta.
 
-### Endpoints
+## Iniciar o frontend
 
-| Método | Rota               | Descrição                                   |
-| ------ | ------------------ | ------------------------------------------- |
-| GET    | /api/tasks?search= | Lista tarefas (com busca opcional)          |
-| POST   | /api/tasks         | Cria tarefa `{ title, dueDate? }`           |
-| PATCH  | /api/tasks/:id     | Atualiza `{ completed?, title?, dueDate? }` |
-| DELETE | /api/tasks/:id     | Remove uma tarefa                           |
+Em outro terminal, na pasta do projeto:
 
-## 3. Frontend (React)
+```powershell
+Set-Location .\frontend
+npm install
+npm run dev
+```
 
-Acesse `http://localhost:5173`.
+Abra `http://localhost:5173`. O frontend chama a API em `http://localhost:3333`.
 
-## Funcionalidades
+## O que dá para fazer
 
-- Listagem de tarefas com contadores de total e concluídas
-- Busca de tarefas em tempo real (com debounce)
-- Criação de tarefas via modal ("Create Task"), com data limite opcional
-- Edição de tarefas via modal ("Edit Task") — botão de lápis em cada item
-- Marcar/desmarcar tarefa como concluída (checkbox com gradiente)
-- Exclusão de tarefas (botões de editar/excluir aparecem ao passar o mouse)
-- **Data limite e atraso**: tarefas com data de vencimento no passado e ainda pendentes ficam com o título em vermelho e exibem o selo "Em atraso"
-- Ordenação automática: tarefas com data mais próxima aparecem primeiro
-- Estado vazio idêntico ao mockup ("You have no pending tasks.")
-- Botão flutuante "+" no canto inferior direito
+- Criar, editar, concluir e excluir tarefas
+- Informar uma data de vencimento opcional
+- Pesquisar tarefas e filtrar todas, pendentes ou concluídas
+- Ver os totais e identificar tarefas atrasadas
+
+O backend ordena as tarefas pelas datas de vencimento, com as tarefas sem data no final.

@@ -1,11 +1,11 @@
 import mysql from 'mysql2/promise';
-import 'dotenv/config';
+import './env.js';
 
 const {DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME} = process.env;
 
 export const pool = mysql.createPool({
-  host: DB_HOST || 'localhost',
-  port: Number(DB_PORT) || 3306,
+  host: DB_HOST || '127.0.0.1',
+  port: Number(DB_PORT) || 3307,
   user: DB_USER || 'root',
   password: DB_PASSWORD || '',
   database: DB_NAME || 'todolist',
@@ -14,5 +14,4 @@ export const pool = mysql.createPool({
   queueLimit: 0,
   dateStrings: true,
 });
-
 
